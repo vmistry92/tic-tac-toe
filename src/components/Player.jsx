@@ -1,16 +1,11 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol }) {
+export default function Player({ initialName, symbol, isActive }) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
   function handleEditClick() {
-    // THIS IS BAD PRACTICE as it is scheduled by React in the future it is not instant
-    // setIsEditing(!isEditing); //isEditing is delayed 
-    // setIsEditing(!isEditing); //isEditing is using the old value hasn't been changed yet
-
-    // Instead a function should be used this is best practice to get most up to date value
-    setIsEditing(editing => !editing)  
+    setIsEditing((editing) => !editing);
   }
 
   function handleChange(event) {
@@ -21,12 +16,19 @@ export default function Player({ initialName, symbol }) {
   let btnCaption = "Edit";
 
   if (isEditing) {
-    editablePlayerName = <input type="text" value={playerName} onChange={handleChange} required></input>;
+    editablePlayerName = (
+      <input
+        type="text"
+        value={playerName}
+        onChange={handleChange}
+        required
+      ></input>
+    );
     btnCaption = "Save";
   }
 
   return (
-    <li>
+    <li className={isActive ? "active" : undefined}>
       <span className="player">
         {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
